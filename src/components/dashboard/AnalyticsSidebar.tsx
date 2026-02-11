@@ -16,13 +16,13 @@ export function AnalyticsSidebar({ product, columns, onClose }: Props) {
   const breakeven = totalCost;
   const status = getPriceStatus(product.sellingPrice, totalCost);
 
-  const statusLabel = status === "green" ? "Healthy" : status === "amber" ? "Caution" : "Low Margin";
+  const statusLabel = status === "green" ? "صحي" : status === "amber" ? "تحذير" : "هامش منخفض";
 
   return (
-    <div className="w-80 shrink-0 glass-panel rounded-xl p-6 space-y-6 animate-in slide-in-from-right-4 duration-300">
+    <div className="w-80 shrink-0 glass-panel rounded-xl p-6 space-y-6 animate-in slide-in-from-left-4 duration-300">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Analytics
+          التحليلات
         </h3>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
           <X size={18} />
@@ -30,7 +30,7 @@ export function AnalyticsSidebar({ product, columns, onClose }: Props) {
       </div>
 
       <div>
-        <p className="text-lg font-semibold text-foreground truncate">{product.name || "Untitled Product"}</p>
+        <p className="text-lg font-semibold text-foreground truncate">{product.name || "منتج بدون اسم"}</p>
         <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${
           status === "green" ? "status-green" : status === "amber" ? "status-amber" : "status-red"
         }`}>
@@ -41,42 +41,42 @@ export function AnalyticsSidebar({ product, columns, onClose }: Props) {
       <div className="space-y-4">
         <MetricCard
           icon={<TrendingUp size={18} />}
-          label="ROI"
+          label="العائد على الاستثمار"
           value={`${roi.toFixed(1)}%`}
-          sublabel="Return on Investment"
+          sublabel="ROI"
           status={status}
         />
         <MetricCard
           icon={<DollarSign size={18} />}
-          label="Net Profit"
-          value={`$${netProfit.toFixed(2)}`}
-          sublabel="Selling Price − Total Cost"
+          label="صافي الربح"
+          value={`${netProfit.toFixed(2)} ر.س`}
+          sublabel="سعر البيع − إجمالي التكلفة"
           status={netProfit >= 0 ? (status) : "red"}
         />
         <MetricCard
           icon={<Target size={18} />}
-          label="Break-even"
-          value={`$${breakeven.toFixed(2)}`}
-          sublabel="Minimum selling price"
+          label="نقطة التعادل"
+          value={`${breakeven.toFixed(2)} ر.س`}
+          sublabel="أقل سعر بيع ممكن"
           status="green"
         />
       </div>
 
       <div className="pt-4 border-t border-border space-y-2">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cost Breakdown</h4>
-        {columns.map((col) => (
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">تفاصيل التكلفة</h4>
+        {columns.filter(c => c.includedInFormula).map((col) => (
           <div key={col.id} className="flex justify-between text-sm">
             <span className="text-muted-foreground">{col.label}</span>
-            <span className="font-mono-nums text-foreground">${(product.costs[col.id] || 0).toFixed(2)}</span>
+            <span className="font-mono-nums text-foreground">{(product.costs[col.id] || 0).toFixed(2)} ر.س</span>
           </div>
         ))}
         <div className="flex justify-between text-sm font-semibold pt-1 border-t border-border">
-          <span className="text-foreground">Total Cost</span>
-          <span className="font-mono-nums text-foreground">${totalCost.toFixed(2)}</span>
+          <span className="text-foreground">إجمالي التكلفة</span>
+          <span className="font-mono-nums text-foreground">{totalCost.toFixed(2)} ر.س</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Ideal Price (3×)</span>
-          <span className="font-mono-nums text-primary">${idealPrice.toFixed(2)}</span>
+          <span className="text-muted-foreground">السعر المثالي (3×)</span>
+          <span className="font-mono-nums text-primary">{idealPrice.toFixed(2)} ر.س</span>
         </div>
       </div>
     </div>
