@@ -2,6 +2,7 @@ export interface CostColumn {
   id: string;
   label: string;
   isDefault: boolean;
+  includedInFormula: boolean;
 }
 
 export interface Product {
@@ -22,5 +23,7 @@ export function getPriceStatus(sellingPrice: number, totalCost: number): PriceSt
 }
 
 export function getTotalCost(product: Product, columns: CostColumn[]): number {
-  return columns.reduce((sum, col) => sum + (product.costs[col.id] || 0), 0);
+  return columns
+    .filter((col) => col.includedInFormula)
+    .reduce((sum, col) => sum + (product.costs[col.id] || 0), 0);
 }

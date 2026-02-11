@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { Plus, Trash2, Columns3, Package } from "lucide-react";
 import type { Product, CostColumn } from "@/types/pricing";
 import { getTotalCost, getPriceStatus } from "@/types/pricing";
+import { useDragScroll } from "@/hooks/useDragScroll";
+import { Switch } from "@/components/ui/switch";
 
 interface Props {
   products: Product[];
@@ -11,7 +13,7 @@ interface Props {
   onUpdateProduct: (id: string, updates: Partial<Product>) => void;
   onAddProduct: () => void;
   onRemoveProduct: (id: string) => void;
-  onAddColumn: (label: string) => void;
+  onAddColumn: (label: string, includedInFormula: boolean) => void;
   onRemoveColumn: (id: string) => void;
 }
 
@@ -22,15 +24,18 @@ export function PricingTable({
   onAddColumn, onRemoveColumn,
 }: Props) {
   const [newColName, setNewColName] = useState("");
+  const [newColInFormula, setNewColInFormula] = useState(false);
   const [showColInput, setShowColInput] = useState(false);
+  const scrollRef = useDragScroll();
 
   const handleAddColumn = useCallback(() => {
     if (newColName.trim()) {
-      onAddColumn(newColName.trim());
+      onAddColumn(newColName.trim(), newColInFormula);
       setNewColName("");
+      setNewColInFormula(false);
       setShowColInput(false);
     }
-  }, [newColName, onAddColumn]);
+  }, [newColName, newColInFormula, onAddColumn]);
 
   const setCost = (productId: string, colId: string, value: string) => {
     const product = products.find((p) => p.id === productId);
@@ -48,7 +53,7 @@ export function PricingTable({
           onClick={onAddProduct}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
         >
-          <Plus size={16} /> Add Product
+          <Plus size={16} /> إضافة منتج
         </button>
 
         {showColInput ? (
@@ -58,14 +63,22 @@ export function PricingTable({
               value={newColName}
               onChange={(e) => setNewColName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAddColumn()}
-              placeholder="Column name..."
+              placeholder="اسم العمود..."
               className="px-3 py-2 rounded-lg bg-muted text-foreground text-sm border border-border focus:outline-none focus:ring-1 focus:ring-ring"
             />
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Switch
+                checked={newColInFormula}
+                onCheckedChange={setNewColInFormula}
+                className="scale-75"
+              />
+              <span>ضمن المعادلة</span>
+            </div>
             <button onClick={handleAddColumn} className="px-3 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity">
-              Add
+              إضافة
             </button>
-            <button onClick={() => { setShowColInput(false); setNewColName(""); }} className="text-muted-foreground hover:text-foreground text-sm">
-              Cancel
+            <button onClick={() => { setShowColInput(false); setNewColName(""); setNewColInFormula(false); }} className="text-muted-foreground hover:text-foreground text-sm">
+              إلغاء
             </button>
           </div>
         ) : (
@@ -73,34 +86,37 @@ export function PricingTable({
             onClick={() => setShowColInput(true)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
           >
-            <Columns3 size={16} /> Add Cost Factor
+            <Columns3 size={16} /> إضافة عامل تكلفة
           </button>
         )}
       </div>
 
       {/* Table */}
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="overflow-x-auto">
+        <div ref={scrollRef} className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground w-8"></th>
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[180px]">Product Name</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground w-8"></th>
+                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[180px]">اسم المنتج</th>
                 {columns.map((col) => (
-                  <th key={col.id} className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
-                    <div className="flex items-center justify-end gap-1">
+                  <th key={col.id} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
+                    <div className="flex items-center justify-start gap-1">
                       {col.label}
+                      {!col.includedInFormula && (
+                        <span className="text-[10px] text-muted-foreground/50 font-normal">(معلوماتي)</span>
+                      )}
                       {!col.isDefault && (
-                        <button onClick={() => onRemoveColumn(col.id)} className="text-muted-foreground hover:text-destructive transition-colors ml-1">
+                        <button onClick={() => onRemoveColumn(col.id)} className="text-muted-foreground hover:text-destructive transition-colors mr-1">
                           <Trash2 size={12} />
                         </button>
                       )}
                     </div>
                   </th>
                 ))}
-                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">Total Cost</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">Ideal Price</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">Selling Price</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">إجمالي التكلفة</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">السعر المثالي</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">سعر البيع</th>
                 <th className="w-10"></th>
               </tr>
             </thead>
@@ -109,7 +125,7 @@ export function PricingTable({
                 <tr>
                   <td colSpan={columns.length + 5} className="text-center py-16 text-muted-foreground">
                     <Package size={32} className="mx-auto mb-2 opacity-40" />
-                    <p>No products yet. Add one to get started.</p>
+                    <p>لا توجد منتجات بعد. أضف منتجاً للبدء.</p>
                   </td>
                 </tr>
               )}
@@ -139,14 +155,13 @@ export function PricingTable({
                         value={product.name}
                         onChange={(e) => onUpdateProduct(product.id, { name: e.target.value })}
                         onClick={(e) => e.stopPropagation()}
-                        placeholder="Product name..."
-                        className="w-full bg-transparent text-foreground focus:outline-none placeholder:text-muted-foreground/50"
+                        placeholder="اسم المنتج..."
+                        className="w-full bg-transparent text-foreground focus:outline-none placeholder:text-muted-foreground/50 text-right"
                       />
                     </td>
                     {columns.map((col) => (
-                      <td key={col.id} className="px-4 py-2 text-right">
-                        <div className="flex items-center justify-end">
-                          <span className="text-muted-foreground mr-1">$</span>
+                      <td key={col.id} className="px-4 py-2 text-left">
+                        <div className="flex items-center justify-start">
                           <input
                             type="number"
                             min="0"
@@ -155,24 +170,24 @@ export function PricingTable({
                             onChange={(e) => setCost(product.id, col.id, e.target.value)}
                             onClick={(e) => e.stopPropagation()}
                             placeholder="0.00"
-                            className="w-20 bg-transparent text-right font-mono-nums text-foreground focus:outline-none placeholder:text-muted-foreground/40"
+                            className="w-20 bg-transparent text-left font-mono-nums text-foreground focus:outline-none placeholder:text-muted-foreground/40"
                           />
+                          <span className="text-muted-foreground mr-1">ر.س</span>
                         </div>
                       </td>
                     ))}
-                    <td className="px-4 py-2 text-right font-mono-nums font-semibold text-foreground">
-                      ${totalCost.toFixed(2)}
+                    <td className="px-4 py-2 text-left font-mono-nums font-semibold text-foreground">
+                      {totalCost.toFixed(2)} ر.س
                     </td>
-                    <td className="px-4 py-2 text-right font-mono-nums font-semibold text-primary">
-                      ${idealPrice.toFixed(2)}
+                    <td className="px-4 py-2 text-left font-mono-nums font-semibold text-primary">
+                      {idealPrice.toFixed(2)} ر.س
                     </td>
-                    <td className="px-4 py-2 text-right">
+                    <td className="px-4 py-2 text-left">
                       <div className={`inline-flex items-center rounded-md px-2 py-1 ${
                         status === "green" ? "status-green glow-green" :
                         status === "amber" ? "status-amber glow-amber" :
                         "status-red glow-red"
                       }`}>
-                        <span className="mr-1">$</span>
                         <input
                           type="number"
                           min="0"
@@ -181,8 +196,9 @@ export function PricingTable({
                           onChange={(e) => onUpdateProduct(product.id, { sellingPrice: parseFloat(e.target.value) || 0 })}
                           onClick={(e) => e.stopPropagation()}
                           placeholder="0.00"
-                          className="w-20 bg-transparent text-right font-mono-nums font-semibold focus:outline-none placeholder:opacity-50"
+                          className="w-20 bg-transparent text-left font-mono-nums font-semibold focus:outline-none placeholder:opacity-50"
                         />
+                        <span className="mr-1">ر.س</span>
                       </div>
                     </td>
                     <td className="px-2 py-2">

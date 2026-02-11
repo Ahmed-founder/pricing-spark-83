@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cost_columns: {
+        Row: {
+          col_key: string
+          created_at: string
+          id: string
+          included_in_formula: boolean
+          is_default: boolean
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          col_key: string
+          created_at?: string
+          id?: string
+          included_in_formula?: boolean
+          is_default?: boolean
+          label: string
+          sort_order?: number
+        }
+        Update: {
+          col_key?: string
+          created_at?: string
+          id?: string
+          included_in_formula?: boolean
+          is_default?: boolean
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          costs: Json
+          created_at: string
+          id: string
+          name: string
+          selling_price: number
+          updated_at: string
+        }
+        Insert: {
+          costs?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          selling_price?: number
+          updated_at?: string
+        }
+        Update: {
+          costs?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          selling_price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
