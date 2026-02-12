@@ -130,7 +130,7 @@ export function PricingTable({
             <tbody>
               {products.length === 0 && (
                 <tr>
-                  <td colSpan={columns.length + 5} className="text-center py-16 text-muted-foreground">
+                  <td colSpan={columns.length + 5 + DISCOUNT_RATES.length} className="text-center py-16 text-muted-foreground">
                     <Package size={32} className="mx-auto mb-2 opacity-40" />
                     <p>لا توجد منتجات بعد. أضف منتجاً للبدء.</p>
                   </td>
