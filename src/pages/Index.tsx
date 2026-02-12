@@ -12,6 +12,7 @@ const Index = () => {
     addColumn, removeColumn,
   } = usePricingData();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { isDark, toggle: toggleTheme } = useTheme();
 
   const selectedProduct = products.find((p) => p.id === selectedId) || null;
 
