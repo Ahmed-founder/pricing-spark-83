@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { BarChart3, Loader2 } from "lucide-react";
+import { BarChart3, Loader2, Sun, Moon } from "lucide-react";
 import { PricingTable } from "@/components/dashboard/PricingTable";
 import { AnalyticsSidebar } from "@/components/dashboard/AnalyticsSidebar";
 import { usePricingData } from "@/hooks/usePricingData";
+import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
   const {
@@ -11,6 +12,7 @@ const Index = () => {
     addColumn, removeColumn,
   } = usePricingData();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { isDark, toggle: toggleTheme } = useTheme();
 
   const selectedProduct = products.find((p) => p.id === selectedId) || null;
 
@@ -26,14 +28,23 @@ const Index = () => {
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Header */}
       <header className="border-b border-border px-6 py-4">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center">
-            <BarChart3 size={20} className="text-primary" />
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center">
+              <BarChart3 size={20} className="text-primary" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-foreground tracking-tight">استراتيجية التسعير</h1>
+              <p className="text-xs text-muted-foreground">قاعدة 3× الذهبية · تحليل الهوامش الفورية</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-bold text-foreground tracking-tight">استراتيجية التسعير</h1>
-            <p className="text-xs text-muted-foreground">قاعدة 3× الذهبية · تحليل الهوامش الفورية</p>
-          </div>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-secondary text-secondary-foreground hover:opacity-80 transition-opacity"
+            title={isDark ? "الوضع الفاتح" : "الوضع الداكن"}
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
       </header>
 

@@ -6,6 +6,57 @@
 
 @layer base {
   :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 160 84% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 93%;
+    --secondary-foreground: 222 47% 15%;
+
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 20% 90%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 20% 85%;
+    --input: 214 20% 85%;
+    --ring: 160 84% 32%;
+
+    --radius: 0.5rem;
+
+    --status-emerald: 160 84% 32%;
+    --status-emerald-bg: 160 50% 92%;
+    --status-amber: 38 92% 50%;
+    --status-amber-bg: 38 70% 92%;
+    --status-crimson: 0 72% 51%;
+    --status-crimson-bg: 0 60% 94%;
+
+    --glass-bg: 0 0% 100%;
+    --glass-border: 214 20% 88%;
+
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 222 47% 15%;
+    --sidebar-primary: 160 84% 32%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 93%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 20% 85%;
+    --sidebar-ring: 160 84% 32%;
+  }
+
+  .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 96%;
 
@@ -34,9 +85,6 @@
     --input: 215 25% 16%;
     --ring: 160 84% 39%;
 
-    --radius: 0.5rem;
-
-    /* Status colors */
     --status-emerald: 160 84% 39%;
     --status-emerald-bg: 160 84% 12%;
     --status-amber: 38 92% 50%;
@@ -44,7 +92,6 @@
     --status-crimson: 0 72% 51%;
     --status-crimson-bg: 0 72% 12%;
 
-    /* Glass */
     --glass-bg: 222 47% 11%;
     --glass-border: 215 25% 20%;
 

@@ -5,6 +5,8 @@ import { getTotalCost, getPriceStatus } from "@/types/pricing";
 import { useDragScroll } from "@/hooks/useDragScroll";
 import { Switch } from "@/components/ui/switch";
 
+const DISCOUNT_RATES = [10, 15, 20, 30, 40];
+
 interface Props {
   products: Product[];
   columns: CostColumn[];
@@ -117,13 +119,18 @@ export function PricingTable({
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">إجمالي التكلفة</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">السعر المثالي</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">سعر البيع</th>
+                {DISCOUNT_RATES.map((rate) => (
+                  <th key={rate} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
+                    قبل خصم {rate}%
+                  </th>
+                ))}
                 <th className="w-10"></th>
               </tr>
             </thead>
             <tbody>
               {products.length === 0 && (
                 <tr>
-                  <td colSpan={columns.length + 5} className="text-center py-16 text-muted-foreground">
+                  <td colSpan={columns.length + 5 + DISCOUNT_RATES.length} className="text-center py-16 text-muted-foreground">
                     <Package size={32} className="mx-auto mb-2 opacity-40" />
                     <p>لا توجد منتجات بعد. أضف منتجاً للبدء.</p>
                   </td>
@@ -163,9 +170,8 @@ export function PricingTable({
                       <td key={col.id} className="px-4 py-2 text-left">
                         <div className="flex items-center justify-start">
                           <input
-                            type="number"
-                            min="0"
-                            step="0.01"
+                            type="text"
+                            inputMode="decimal"
                             value={product.costs[col.id] || ""}
                             onChange={(e) => setCost(product.id, col.id, e.target.value)}
                             onClick={(e) => e.stopPropagation()}
@@ -189,9 +195,8 @@ export function PricingTable({
                         "status-red glow-red"
                       }`}>
                         <input
-                          type="number"
-                          min="0"
-                          step="0.01"
+                          type="text"
+                          inputMode="decimal"
                           value={product.sellingPrice || ""}
                           onChange={(e) => onUpdateProduct(product.id, { sellingPrice: parseFloat(e.target.value) || 0 })}
                           onClick={(e) => e.stopPropagation()}
@@ -201,6 +206,16 @@ export function PricingTable({
                         <span className="mr-1">ر.س</span>
                       </div>
                     </td>
+                    {DISCOUNT_RATES.map((rate) => {
+                      const preDiscount = product.sellingPrice > 0
+                        ? (product.sellingPrice / (1 - rate / 100))
+                        : 0;
+                      return (
+                        <td key={rate} className="px-4 py-2 text-left font-mono-nums text-muted-foreground">
+                          {preDiscount > 0 ? `${preDiscount.toFixed(2)} ر.س` : "—"}
+                        </td>
+                      );
+                    })}
                     <td className="px-2 py-2">
                       <button
                         onClick={(e) => { e.stopPropagation(); onRemoveProduct(product.id); }}
