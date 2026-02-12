@@ -195,9 +195,8 @@ export function PricingTable({
                         "status-red glow-red"
                       }`}>
                         <input
-                          type="number"
-                          min="0"
-                          step="0.01"
+                          type="text"
+                          inputMode="decimal"
                           value={product.sellingPrice || ""}
                           onChange={(e) => onUpdateProduct(product.id, { sellingPrice: parseFloat(e.target.value) || 0 })}
                           onClick={(e) => e.stopPropagation()}
@@ -207,6 +206,16 @@ export function PricingTable({
                         <span className="mr-1">ر.س</span>
                       </div>
                     </td>
+                    {DISCOUNT_RATES.map((rate) => {
+                      const preDiscount = product.sellingPrice > 0
+                        ? (product.sellingPrice / (1 - rate / 100))
+                        : 0;
+                      return (
+                        <td key={rate} className="px-4 py-2 text-left font-mono-nums text-muted-foreground">
+                          {preDiscount > 0 ? `${preDiscount.toFixed(2)} ر.س` : "—"}
+                        </td>
+                      );
+                    })}
                     <td className="px-2 py-2">
                       <button
                         onClick={(e) => { e.stopPropagation(); onRemoveProduct(product.id); }}
