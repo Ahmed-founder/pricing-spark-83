@@ -170,9 +170,8 @@ export function PricingTable({
                       <td key={col.id} className="px-4 py-2 text-left">
                         <div className="flex items-center justify-start">
                           <input
-                            type="number"
-                            min="0"
-                            step="0.01"
+                            type="text"
+                            inputMode="decimal"
                             value={product.costs[col.id] || ""}
                             onChange={(e) => setCost(product.id, col.id, e.target.value)}
                             onClick={(e) => e.stopPropagation()}
