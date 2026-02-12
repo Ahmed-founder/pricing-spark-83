@@ -119,6 +119,11 @@ export function PricingTable({
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">إجمالي التكلفة</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">السعر المثالي</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">سعر البيع</th>
+                {DISCOUNT_RATES.map((rate) => (
+                  <th key={rate} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
+                    قبل خصم {rate}%
+                  </th>
+                ))}
                 <th className="w-10"></th>
               </tr>
             </thead>
