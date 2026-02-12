@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { BarChart3, Loader2 } from "lucide-react";
+import { BarChart3, Loader2, Sun, Moon } from "lucide-react";
 import { PricingTable } from "@/components/dashboard/PricingTable";
 import { AnalyticsSidebar } from "@/components/dashboard/AnalyticsSidebar";
 import { usePricingData } from "@/hooks/usePricingData";
+import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
   const {
