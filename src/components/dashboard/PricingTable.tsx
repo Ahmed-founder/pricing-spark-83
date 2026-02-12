@@ -5,6 +5,8 @@ import { getTotalCost, getPriceStatus } from "@/types/pricing";
 import { useDragScroll } from "@/hooks/useDragScroll";
 import { Switch } from "@/components/ui/switch";
 
+const DISCOUNT_RATES = [10, 15, 20, 30, 40];
+
 interface Props {
   products: Product[];
   columns: CostColumn[];
