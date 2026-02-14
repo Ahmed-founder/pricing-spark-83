@@ -51,7 +51,10 @@ export type Database = {
           id: string
           link: string | null
           name: string
+          parent_id: string | null
+          section_id: string | null
           selling_price: number
+          sort_order: number
           updated_at: string
         }
         Insert: {
@@ -60,7 +63,10 @@ export type Database = {
           id?: string
           link?: string | null
           name?: string
+          parent_id?: string | null
+          section_id?: string | null
           selling_price?: number
+          sort_order?: number
           updated_at?: string
         }
         Update: {
@@ -69,8 +75,47 @@ export type Database = {
           id?: string
           link?: string | null
           name?: string
+          parent_id?: string | null
+          section_id?: string | null
           selling_price?: number
+          sort_order?: number
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sections: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          sort_order?: number
         }
         Relationships: []
       }
