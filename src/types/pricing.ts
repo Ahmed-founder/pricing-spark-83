@@ -5,12 +5,21 @@ export interface CostColumn {
   includedInFormula: boolean;
 }
 
+export interface Section {
+  id: string;
+  name: string;
+  sortOrder: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   costs: Record<string, number>;
   sellingPrice: number;
   link: string;
+  sectionId: string | null;
+  sortOrder: number;
+  parentId: string | null;
 }
 
 export type PriceStatus = "green" | "amber" | "red";

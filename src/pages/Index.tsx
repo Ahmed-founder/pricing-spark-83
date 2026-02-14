@@ -7,9 +7,11 @@ import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
   const {
-    products, columns, loading,
+    products, columns, sections, loading,
     addProduct, removeProduct, updateProduct,
     addColumn, removeColumn,
+    addSection, updateSection, removeSection,
+    moveProductToSection,
   } = usePricingData();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { isDark, toggle: toggleTheme } = useTheme();
@@ -26,7 +28,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
-      {/* Header */}
       <header className="border-b border-border px-6 py-4">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
@@ -48,11 +49,11 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Content */}
       <div className="flex gap-6 p-6 items-start">
         <PricingTable
           products={products}
           columns={columns}
+          sections={sections}
           selectedId={selectedId}
           onSelectProduct={setSelectedId}
           onUpdateProduct={updateProduct}
@@ -60,6 +61,10 @@ const Index = () => {
           onRemoveProduct={removeProduct}
           onAddColumn={addColumn}
           onRemoveColumn={removeColumn}
+          onAddSection={addSection}
+          onUpdateSection={updateSection}
+          onRemoveSection={removeSection}
+          onMoveProduct={moveProductToSection}
         />
 
         {selectedProduct && (
