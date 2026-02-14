@@ -49,6 +49,7 @@ export type Database = {
           costs: Json
           created_at: string
           id: string
+          link: string | null
           name: string
           selling_price: number
           updated_at: string
@@ -57,6 +58,7 @@ export type Database = {
           costs?: Json
           created_at?: string
           id?: string
+          link?: string | null
           name?: string
           selling_price?: number
           updated_at?: string
@@ -65,6 +67,7 @@ export type Database = {
           costs?: Json
           created_at?: string
           id?: string
+          link?: string | null
           name?: string
           selling_price?: number
           updated_at?: string

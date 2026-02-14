@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Plus, Trash2, Columns3, Package } from "lucide-react";
+import { Plus, Trash2, Columns3, Package, Link, Copy, Check } from "lucide-react";
 import type { Product, CostColumn } from "@/types/pricing";
 import { getTotalCost, getPriceStatus } from "@/types/pricing";
 import { useDragScroll } from "@/hooks/useDragScroll";
@@ -28,6 +28,7 @@ export function PricingTable({
   const [newColName, setNewColName] = useState("");
   const [newColInFormula, setNewColInFormula] = useState(false);
   const [showColInput, setShowColInput] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const scrollRef = useDragScroll();
 
   const handleAddColumn = useCallback(() => {
@@ -45,6 +46,12 @@ export function PricingTable({
     onUpdateProduct(productId, {
       costs: { ...product.costs, [colId]: parseFloat(value) || 0 },
     });
+  };
+
+  const copyLink = (productId: string, link: string) => {
+    navigator.clipboard.writeText(link);
+    setCopiedId(productId);
+    setTimeout(() => setCopiedId(null), 1500);
   };
 
   return (
@@ -99,11 +106,17 @@ export function PricingTable({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground w-8"></th>
-                <th className="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[180px]">اسم المنتج</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground w-8"></th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[180px]">اسم المنتج</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[180px]">
+                  <div className="flex items-center justify-center gap-1">
+                    <Link size={12} />
+                    الرابط
+                  </div>
+                </th>
                 {columns.map((col) => (
-                  <th key={col.id} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
-                    <div className="flex items-center justify-start gap-1">
+                  <th key={col.id} className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
+                    <div className="flex items-center justify-center gap-1">
                       {col.label}
                       {!col.includedInFormula && (
                         <span className="text-[10px] text-muted-foreground/50 font-normal">(معلوماتي)</span>
@@ -116,11 +129,11 @@ export function PricingTable({
                     </div>
                   </th>
                 ))}
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">إجمالي التكلفة</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">السعر المثالي</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">سعر البيع</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">إجمالي التكلفة</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-primary min-w-[110px]">السعر المثالي</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px]">سعر البيع</th>
                 {DISCOUNT_RATES.map((rate) => (
-                  <th key={rate} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
+                  <th key={rate} className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]">
                     قبل خصم {rate}%
                   </th>
                 ))}
@@ -130,7 +143,7 @@ export function PricingTable({
             <tbody>
               {products.length === 0 && (
                 <tr>
-                  <td colSpan={columns.length + 5 + DISCOUNT_RATES.length} className="text-center py-16 text-muted-foreground">
+                  <td colSpan={columns.length + 6 + DISCOUNT_RATES.length} className="text-center py-16 text-muted-foreground">
                     <Package size={32} className="mx-auto mb-2 opacity-40" />
                     <p>لا توجد منتجات بعد. أضف منتجاً للبدء.</p>
                   </td>
@@ -150,25 +163,45 @@ export function PricingTable({
                       isSelected ? "bg-accent/60" : "hover:bg-muted/30"
                     }`}
                   >
-                    <td className="px-4 py-2">
-                      <div className={`w-2 h-2 rounded-full ${
+                    <td className="px-4 py-2 text-center">
+                      <div className={`w-2 h-2 rounded-full mx-auto ${
                         status === "green" ? "bg-status-emerald" :
                         status === "amber" ? "bg-status-amber" :
                         "bg-status-crimson"
                       }`} />
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 text-center">
                       <input
                         value={product.name}
                         onChange={(e) => onUpdateProduct(product.id, { name: e.target.value })}
                         onClick={(e) => e.stopPropagation()}
                         placeholder="اسم المنتج..."
-                        className="w-full bg-transparent text-foreground focus:outline-none placeholder:text-muted-foreground/50 text-right"
+                        className="w-full bg-transparent text-foreground focus:outline-none placeholder:text-muted-foreground/50 text-center"
                       />
                     </td>
+                    <td className="px-4 py-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        <input
+                          value={product.link}
+                          onChange={(e) => onUpdateProduct(product.id, { link: e.target.value })}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="رابط المنتج..."
+                          className="w-32 bg-transparent text-foreground focus:outline-none placeholder:text-muted-foreground/40 text-center text-xs"
+                        />
+                        {product.link && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); copyLink(product.id, product.link); }}
+                            className="text-muted-foreground hover:text-primary transition-colors p-0.5"
+                            title="نسخ الرابط"
+                          >
+                            {copiedId === product.id ? <Check size={13} className="text-status-emerald" /> : <Copy size={13} />}
+                          </button>
+                        )}
+                      </div>
+                    </td>
                     {columns.map((col) => (
-                      <td key={col.id} className="px-4 py-2 text-left">
-                        <div className="flex items-center justify-start">
+                      <td key={col.id} className="px-4 py-2 text-center">
+                        <div className="flex items-center justify-center">
                           <input
                             type="text"
                             inputMode="decimal"
@@ -176,19 +209,19 @@ export function PricingTable({
                             onChange={(e) => setCost(product.id, col.id, e.target.value)}
                             onClick={(e) => e.stopPropagation()}
                             placeholder="0.00"
-                            className="w-20 bg-transparent text-left font-mono-nums text-foreground focus:outline-none placeholder:text-muted-foreground/40"
+                            className="w-20 bg-transparent text-center font-mono-nums text-foreground focus:outline-none placeholder:text-muted-foreground/40"
                           />
                           <span className="text-muted-foreground mr-1">ر.س</span>
                         </div>
                       </td>
                     ))}
-                    <td className="px-4 py-2 text-left font-mono-nums font-semibold text-foreground">
+                    <td className="px-4 py-2 text-center font-mono-nums font-semibold text-foreground">
                       {totalCost.toFixed(2)} ر.س
                     </td>
-                    <td className="px-4 py-2 text-left font-mono-nums font-semibold text-primary">
+                    <td className="px-4 py-2 text-center font-mono-nums font-semibold text-primary">
                       {idealPrice.toFixed(2)} ر.س
                     </td>
-                    <td className="px-4 py-2 text-left">
+                    <td className="px-4 py-2 text-center">
                       <div className={`inline-flex items-center rounded-md px-2 py-1 ${
                         status === "green" ? "status-green glow-green" :
                         status === "amber" ? "status-amber glow-amber" :
@@ -201,7 +234,7 @@ export function PricingTable({
                           onChange={(e) => onUpdateProduct(product.id, { sellingPrice: parseFloat(e.target.value) || 0 })}
                           onClick={(e) => e.stopPropagation()}
                           placeholder="0.00"
-                          className="w-20 bg-transparent text-left font-mono-nums font-semibold focus:outline-none placeholder:opacity-50"
+                          className="w-20 bg-transparent text-center font-mono-nums font-semibold focus:outline-none placeholder:opacity-50"
                         />
                         <span className="mr-1">ر.س</span>
                       </div>
@@ -211,12 +244,12 @@ export function PricingTable({
                         ? (product.sellingPrice / (1 - rate / 100))
                         : 0;
                       return (
-                        <td key={rate} className="px-4 py-2 text-left font-mono-nums text-muted-foreground">
+                        <td key={rate} className="px-4 py-2 text-center font-mono-nums text-muted-foreground">
                           {preDiscount > 0 ? `${preDiscount.toFixed(2)} ر.س` : "—"}
                         </td>
                       );
                     })}
-                    <td className="px-2 py-2">
+                    <td className="px-2 py-2 text-center">
                       <button
                         onClick={(e) => { e.stopPropagation(); onRemoveProduct(product.id); }}
                         className="text-muted-foreground hover:text-destructive transition-colors p-1"
