@@ -10,6 +10,7 @@ export interface Product {
   name: string;
   costs: Record<string, number>;
   sellingPrice: number;
+  link: string;
 }
 
 export type PriceStatus = "green" | "amber" | "red";

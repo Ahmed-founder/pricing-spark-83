@@ -31,6 +31,7 @@ export function usePricingData() {
           name: p.name,
           costs: (p.costs || {}) as Record<string, number>,
           sellingPrice: Number(p.selling_price) || 0,
+          link: p.link || "",
         })));
       }
       setLoading(false);
@@ -41,7 +42,7 @@ export function usePricingData() {
   const addProduct = useCallback(async () => {
     const { data, error } = await supabase
       .from("products")
-      .insert({ name: "", costs: {}, selling_price: 0 })
+      .insert({ name: "", costs: {}, selling_price: 0, link: "" })
       .select()
       .single();
     if (data) {
@@ -50,6 +51,7 @@ export function usePricingData() {
         name: data.name,
         costs: (data.costs || {}) as Record<string, number>,
         sellingPrice: Number(data.selling_price) || 0,
+        link: data.link || "",
       }]);
     }
   }, []);
@@ -70,6 +72,7 @@ export function usePricingData() {
       const dbUpdates: any = {};
       if (updates.name !== undefined) dbUpdates.name = updates.name;
       if (updates.sellingPrice !== undefined) dbUpdates.selling_price = updates.sellingPrice;
+      if (updates.link !== undefined) dbUpdates.link = updates.link;
       if (updates.costs !== undefined) {
         // Need current full costs
         const current = products.find((p) => p.id === id);
