@@ -1,4 +1,5 @@
 import { X, TrendingUp, DollarSign, Target } from "lucide-react";
+import { Badge, Button, LayerCard } from "@cloudflare/kumo";
 import type { Product, CostColumn } from "@/types/pricing";
 import { getTotalCost, getPriceStatus } from "@/types/pricing";
 
@@ -19,23 +20,21 @@ export function AnalyticsSidebar({ product, columns, onClose }: Props) {
   const statusLabel = status === "green" ? "صحي" : status === "amber" ? "تحذير" : "هامش منخفض";
 
   return (
-    <div className="w-80 shrink-0 glass-panel rounded-xl p-6 space-y-6 animate-in slide-in-from-left-4 duration-300">
+    <aside className="w-full shrink-0 space-y-5 rounded-lg border border-border bg-card p-5 shadow-panel xl:sticky xl:top-24 xl:w-80">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           التحليلات
         </h3>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+        <Button onClick={onClose} variant="ghost" shape="square" size="xs" aria-label="إغلاق التحليلات">
           <X size={18} />
-        </button>
+        </Button>
       </div>
 
       <div>
         <p className="text-lg font-semibold text-foreground truncate">{product.name || "منتج بدون اسم"}</p>
-        <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${
-          status === "green" ? "status-green" : status === "amber" ? "status-amber" : "status-red"
-        }`}>
+        <Badge className="mt-1" appearance="dot" variant={status === "green" ? "success" : status === "amber" ? "warning" : "error"}>
           {statusLabel}
-        </span>
+        </Badge>
       </div>
 
       <div className="space-y-4">
@@ -79,7 +78,7 @@ export function AnalyticsSidebar({ product, columns, onClose }: Props) {
           <span className="font-mono-nums text-primary">{idealPrice.toFixed(2)} ر.س</span>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
 
@@ -91,11 +90,7 @@ function MetricCard({ icon, label, value, sublabel, status }: {
   status: string;
 }) {
   return (
-    <div className={`rounded-lg p-3 ${
-      status === "green" ? "glow-green bg-status-emerald-bg/50" :
-      status === "amber" ? "glow-amber bg-status-amber-bg/50" :
-      "glow-red bg-status-crimson-bg/50"
-    }`}>
+    <LayerCard className="rounded-md p-3 shadow-none">
       <div className="flex items-center gap-2 mb-1">
         <span className={
           status === "green" ? "text-status-emerald" :
@@ -106,6 +101,6 @@ function MetricCard({ icon, label, value, sublabel, status }: {
       </div>
       <p className="text-xl font-bold font-mono-nums text-foreground">{value}</p>
       <p className="text-xs text-muted-foreground mt-0.5">{sublabel}</p>
-    </div>
+    </LayerCard>
   );
 }

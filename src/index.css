@@ -2,164 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 222 47% 11%;
-
+    color-scheme: light;
+    --background: 0 0% 97%;
+    --foreground: 220 9% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
+    --card-foreground: 220 9% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 160 84% 32%;
+    --popover-foreground: 220 9% 14%;
+    --primary: 25 91% 54%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 20% 93%;
-    --secondary-foreground: 222 47% 15%;
-
-    --muted: 210 20% 95%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 210 20% 90%;
-    --accent-foreground: 222 47% 11%;
-
+    --secondary: 220 8% 94%;
+    --secondary-foreground: 220 9% 18%;
+    --muted: 220 8% 96%;
+    --muted-foreground: 220 6% 43%;
+    --accent: 25 92% 95%;
+    --accent-foreground: 24 85% 34%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 214 20% 85%;
-    --input: 214 20% 85%;
-    --ring: 160 84% 32%;
-
-    --radius: 0.5rem;
-
-    --status-emerald: 160 84% 32%;
-    --status-emerald-bg: 160 50% 92%;
-    --status-amber: 38 92% 50%;
-    --status-amber-bg: 38 70% 92%;
-    --status-crimson: 0 72% 51%;
-    --status-crimson-bg: 0 60% 94%;
-
-    --glass-bg: 0 0% 100%;
-    --glass-border: 214 20% 88%;
-
-    --sidebar-background: 0 0% 97%;
-    --sidebar-foreground: 222 47% 15%;
-    --sidebar-primary: 160 84% 32%;
+    --border: 220 9% 86%;
+    --input: 220 9% 80%;
+    --ring: 25 91% 54%;
+    --radius: 0.375rem;
+    --status-emerald: 158 64% 32%;
+    --status-emerald-bg: 152 60% 94%;
+    --status-amber: 32 92% 40%;
+    --status-amber-bg: 38 94% 93%;
+    --status-crimson: 0 72% 46%;
+    --status-crimson-bg: 0 70% 95%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 9% 14%;
+    --sidebar-primary: 25 91% 54%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 20% 93%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 214 20% 85%;
-    --sidebar-ring: 160 84% 32%;
+    --sidebar-accent: 220 8% 94%;
+    --sidebar-accent-foreground: 220 9% 14%;
+    --sidebar-border: 220 9% 86%;
+    --sidebar-ring: 25 91% 54%;
+    --shadow-panel: 0 1px 2px hsl(220 9% 14% / 0.05), 0 8px 24px hsl(220 9% 14% / 0.04);
+    --color-kumo-brand: #f6821f;
+    --color-kumo-brand-hover: #d96c10;
+    --text-color-kumo-brand: #f6821f;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
-
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 96%;
-
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 96%;
-
-    --primary: 160 84% 39%;
-    --primary-foreground: 222 47% 6%;
-
-    --secondary: 215 25% 15%;
-    --secondary-foreground: 210 40% 90%;
-
-    --muted: 215 25% 12%;
-    --muted-foreground: 215 20% 55%;
-
-    --accent: 215 25% 18%;
-    --accent-foreground: 210 40% 96%;
-
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 215 25% 16%;
-    --input: 215 25% 16%;
-    --ring: 160 84% 39%;
-
-    --status-emerald: 160 84% 39%;
-    --status-emerald-bg: 160 84% 12%;
-    --status-amber: 38 92% 50%;
-    --status-amber-bg: 38 92% 12%;
-    --status-crimson: 0 72% 51%;
-    --status-crimson-bg: 0 72% 12%;
-
-    --glass-bg: 222 47% 11%;
-    --glass-border: 215 25% 20%;
-
-    --sidebar-background: 222 47% 7%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 160 84% 39%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 215 25% 15%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 215 25% 16%;
-    --sidebar-ring: 160 84% 39%;
+    color-scheme: dark;
+    --background: 220 9% 7%;
+    --foreground: 220 9% 94%;
+    --card: 220 8% 10%;
+    --card-foreground: 220 9% 94%;
+    --popover: 220 8% 10%;
+    --popover-foreground: 220 9% 94%;
+    --primary: 25 94% 58%;
+    --primary-foreground: 220 9% 8%;
+    --secondary: 220 7% 15%;
+    --secondary-foreground: 220 9% 92%;
+    --muted: 220 7% 13%;
+    --muted-foreground: 220 7% 62%;
+    --accent: 24 32% 17%;
+    --accent-foreground: 25 94% 68%;
+    --destructive: 0 67% 54%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 7% 20%;
+    --input: 220 7% 25%;
+    --ring: 25 94% 58%;
+    --status-emerald: 156 62% 52%;
+    --status-emerald-bg: 156 42% 12%;
+    --status-amber: 38 92% 58%;
+    --status-amber-bg: 36 54% 13%;
+    --status-crimson: 0 78% 66%;
+    --status-crimson-bg: 0 46% 14%;
+    --sidebar-background: 220 8% 10%;
+    --sidebar-foreground: 220 9% 94%;
+    --sidebar-primary: 25 94% 58%;
+    --sidebar-primary-foreground: 220 9% 8%;
+    --sidebar-accent: 220 7% 15%;
+    --sidebar-accent-foreground: 220 9% 94%;
+    --sidebar-border: 220 7% 20%;
+    --sidebar-ring: 25 94% 58%;
+    --shadow-panel: 0 1px 2px hsl(0 0% 0% / 0.3), 0 12px 32px hsl(0 0% 0% / 0.18);
+    --color-kumo-brand: #f6821f;
+    --color-kumo-brand-hover: #ff9a3d;
+    --text-color-kumo-brand: #ff9a3d;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  *::-webkit-scrollbar {
-    display: none;
-  }
+  *::-webkit-scrollbar { display: none; }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    min-width: 320px;
     direction: rtl;
+    font-family: Tahoma, Arial, system-ui, sans-serif;
   }
+
+  button, input { letter-spacing: 0; }
 }
 
 @layer utilities {
   .font-mono-nums {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
     font-variant-numeric: tabular-nums;
   }
+  .shadow-panel { box-shadow: var(--shadow-panel); }
+  .status-green { background: hsl(var(--status-emerald-bg)); color: hsl(var(--status-emerald)); }
+  .status-amber { background: hsl(var(--status-amber-bg)); color: hsl(var(--status-amber)); }
+  .status-red { background: hsl(var(--status-crimson-bg)); color: hsl(var(--status-crimson)); }
+}
 
-  .glass-panel {
-    background: hsl(var(--glass-bg) / 0.8);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--glass-border) / 0.5);
-  }
-
-  .status-green {
-    background: hsl(var(--status-emerald-bg));
-    color: hsl(var(--status-emerald));
-  }
-
-  .status-amber {
-    background: hsl(var(--status-amber-bg));
-    color: hsl(var(--status-amber));
-  }
-
-  .status-red {
-    background: hsl(var(--status-crimson-bg));
-    color: hsl(var(--status-crimson));
-  }
-
-  .glow-green {
-    box-shadow: 0 0 20px hsl(var(--status-emerald) / 0.15);
-  }
-
-  .glow-amber {
-    box-shadow: 0 0 20px hsl(var(--status-amber) / 0.15);
-  }
-
-  .glow-red {
-    box-shadow: 0 0 20px hsl(var(--status-crimson) / 0.15);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { BarChart3, Loader2, Sun, Moon } from "lucide-react";
+import { BarChart3, Loader2, Sun, Moon, CircleDollarSign } from "lucide-react";
+import { Button } from "@cloudflare/kumo";
 import { PricingTable } from "@/components/dashboard/PricingTable";
 import { AnalyticsSidebar } from "@/components/dashboard/AnalyticsSidebar";
 import { usePricingData } from "@/hooks/usePricingData";
@@ -28,28 +29,31 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
-      <header className="border-b border-border px-6 py-4">
-        <div className="flex items-center justify-between w-full">
+      <header className="sticky top-0 z-30 border-b border-border bg-card/95 px-4 py-3 backdrop-blur-sm sm:px-6">
+        <div className="mx-auto flex w-full max-w-[1800px] items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center">
-              <BarChart3 size={20} className="text-primary" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <CircleDollarSign size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-foreground tracking-tight">استراتيجية التسعير</h1>
-              <p className="text-xs text-muted-foreground">قاعدة 3× الذهبية · تحليل الهوامش الفورية</p>
+              <h1 className="text-base font-semibold text-foreground">استراتيجية التسعير</h1>
+              <p className="text-xs text-muted-foreground">تسعير المنتجات وتحليل الهوامش</p>
             </div>
           </div>
-          <button
+          <Button
             onClick={toggleTheme}
-            className="p-2 rounded-lg bg-secondary text-secondary-foreground hover:opacity-80 transition-opacity"
+            variant="secondary"
+            shape="square"
+            size="sm"
+            aria-label={isDark ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن"}
             title={isDark ? "الوضع الفاتح" : "الوضع الداكن"}
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          </Button>
         </div>
       </header>
 
-      <div className="flex gap-6 p-6 items-start">
+      <main className="mx-auto flex w-full max-w-[1800px] flex-col items-start gap-5 p-4 sm:p-6 xl:flex-row">
         <PricingTable
           products={products}
           columns={columns}
@@ -74,7 +78,7 @@ const Index = () => {
             onClose={() => setSelectedId(null)}
           />
         )}
-      </div>
+      </main>
     </div>
   );
 };
