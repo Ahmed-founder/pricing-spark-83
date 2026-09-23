@@ -10,6 +10,8 @@ export function useTheme() {
 
   useEffect(() => {
     const root = document.documentElement;
+    root.dataset.theme = "kumo";
+    root.dataset.mode = isDark ? "dark" : "light";
     if (isDark) {
       root.classList.add("dark");
     } else {

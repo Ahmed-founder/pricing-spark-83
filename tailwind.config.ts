@@ -71,6 +71,9 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        panel: "var(--shadow-panel)",
+      },
       keyframes: {
         "accordion-down": {
           from: {
